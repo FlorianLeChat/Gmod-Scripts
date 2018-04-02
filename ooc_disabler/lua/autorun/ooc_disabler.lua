@@ -1,19 +1,19 @@
--- SETTINGS --
+-- [[ SETTINGS ]] --
 
-// Command name (Default : "ooccontrol")
+-- Command name (Default : "ooccontrol")
 local command_name = "ooccontrol"
-// Execution command delay (Default : 1.5)
+-- Execution command delay (Default : 1.5)
 local command_delay = 1.5
-// Admins can always use ooc when is disabled
+-- Admins can always use ooc when is disabled
 local admin_can_always_use_ooc = true
 
--- CODE WORK --
+-- [[ CODE WORK ]] --
 
 function OOC_Disabler_GamemodeCheck()
 	if string.find(string.lower(GAMEMODE.Name), "rp") then
 		if SERVER then
 
-			// OOC CONTROL COMMAND
+			-- OOC CONTROL COMMAND
 
 			local function OOC_CONTROL(ply)
 				local pname = ply:Nick()
@@ -34,7 +34,7 @@ function OOC_Disabler_GamemodeCheck()
 			end
 			DarkRP.defineChatCommand(command_name, OOC_CONTROL)
 
-			// OOC COMMAND MODIFICATION
+			-- OOC COMMAND MODIFICATION
 
 			if admin_can_always_use_ooc then
 				local function OOC(ply, args)
@@ -90,5 +90,5 @@ concommand.Add("oocdisaber_check", function(ply)
 	ply:ChatPrint("This server use 'OOC Disabler' script ! ( https://steamcommunity.com/sharedfiles/filedetails/?id=1314167955 )")
 end)
 
-// Made by "The Cat" alias "Florian #" ( http://steamcommunity.com/profiles/76561198053479101 )
-// I'm french baguette.. sorry <3
+-- Made by "The Cat" alias "Florian #" ( http://steamcommunity.com/profiles/76561198053479101 )
+-- I'm french baguette.. sorry <3
