@@ -1,16 +1,16 @@
 -- [[ SETTINGS ]] --
 
--- Command name (Default : "ooccontrol")
+-- What the name of this command ? (Default : "ooccontrol")
 local command_name = "ooccontrol"
--- Execution command delay (Default : 1.5)
+-- What is the delay for DarkRP anti-spam command ? (Default : 1.5)
 local command_delay = 1.5
--- Admins can always use ooc when is disabled
+-- Admins can always use ooc when is disabled ? (Default : true)
 local admin_can_always_use_ooc = true
 
 -- [[ CODE WORK ]] --
 
 function OOC_Disabler_GamemodeCheck()
-	if string.find(string.lower(GAMEMODE.Name), "rp") then
+	if _G.DarkRP then
 		if SERVER then
 
 			-- OOC CONTROL COMMAND
@@ -78,7 +78,7 @@ function OOC_Disabler_GamemodeCheck()
 		timer.Create("OOC_Disabler.GamemodeInitError", 30, 0, function()
 			for _, v in ipairs(player.GetAll()) do
 				if IsValid(v) then
-					v:ChatPrint("'OOC Disabler' not loaded because he only work with RP Gamemodes !")
+					v:ChatPrint("'OOC Disabler' not loaded because he only work with DarkRP or derived !")
 				end
 			end
 		end)
