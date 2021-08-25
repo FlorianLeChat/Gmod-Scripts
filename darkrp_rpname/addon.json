@@ -1,0 +1,11 @@
+{
+	"title"		:	"[DarkRP] Remove characters restriction in rp names",
+	"type"		:	"tool",
+	"tags"		:	["roleplay" , "realism"],
+	"ignore"	:
+	[
+		"*.psd",
+		"*.vcproj",
+		"*.svn*"
+	]
+}
