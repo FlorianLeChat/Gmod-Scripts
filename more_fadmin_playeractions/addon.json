@@ -1,0 +1,11 @@
+{
+	"title"		:	"[DarkRP] More FAdmin PlayerActions",
+	"type"		:	"tool",
+	"tags"		:	["roleplay" , "realism"],
+	"ignore"	:
+	[
+		"*.psd",
+		"*.vcproj",
+		"*.svn*"
+	]
+}
