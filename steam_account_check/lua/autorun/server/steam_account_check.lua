@@ -1,100 +1,145 @@
-if game.IsDedicated() then
-	-- [[ SETTINGS ]] --
+if game.SinglePlayer() then return end
 
-	local limitedaccountcheck = true
+local redColor = Color(255, 0, 0, 255)
+local greenColor = Color(22, 184, 78, 255)
 
-	-- The family sharing game check requires a Steam key API
-	local familysharing = false
+-- [[ SETTINGS ]] --
 
-	-- The vac bans check requires a Steam key API
-	local vacbancheck = false
-	-- Limit of vac bans before kick the player (if vacbancheck set to true)
-	local maxvacbans = 1
+local limitedAccount = true
 
-	-- Find an API Key here : https://steamcommunity.com/dev/apikey
-	local apikey = ""
+-- Requires a Steam API key!
+local familySharing = false
 
-	-- Put the SteamIDs which not be checked on their connection
-	local nocheck = {"STEAM_0:1:46606686"}
+-- Requires a Steam API key!
+local vacBanCheck = false
+local maxVACBans = 2
 
-	local redcolor = Color(255, 0, 0, 255)
-	local greencolor = Color(22, 184, 78, 255)
+-- Find an API Key here: https://steamcommunity.com/dev/apikey.
+local apiKey = ""
 
-	-- [[ CODE ]] --
+-- Put the SteamIDs which not be checked on their connection.
+local noCheck = {
 
-	hook.Add("CheckPassword", "SteamAccountChecks", function(steamID64, ipAddress)
-		local steamid = util.SteamIDFrom64(steamID64)
+	["STEAM_0:1:46606686"] = true,
 
-		if limitedaccountcheck and not table.HasValue(nocheck, steamid) then
-			http.Fetch(string.format("https://steamcommunity.com/profiles/%s/?xml=1", steamID64),
-				function(body, len, headers, code)
-					if body != nil and len != 0 and code == 200 then
-						if string.find(body, "<isLimitedAccount>1</isLimitedAccount>") then
-							game.KickID(steamid, "You have been disconnected from the server (Limited account)")
-							MsgC(greencolor, "Stopping a steam limited account ! (SteamID64 : " .. steamID64 .. " | IP : " .. ipAddress .. ")\n")
-							return
-						end
-					end
-				end,
+}
 
-				function(error)
-					MsgC(redcolor, "Unable to check an steam account. (ID : " .. steamID64 .. " | Error : '" .. error .. "')\n")
+-- [[ CODE ]] --
+
+hook.Add("CheckPassword", "Gmod.Workshop.Steam_Account_Check", function(steamID64, ipAddress, svPassword, clPassword, name)
+
+	local steamID = util.SteamIDFrom64(steamID64)
+
+	if noCheck[steamID] then
+
+		return
+
+	end
+
+	if limitedAccount then
+
+		http.Fetch("https://steamcommunity.com/profiles/" .. steamID64 .. "/?xml=1",
+
+			function(body, length, headers, code)
+
+				if body == "" or length == 0 and code ~= 200 then
+
+					return
+
 				end
-			)
-		end
 
-		if vacbancheck and apikey != "" and not table.HasValue(nocheck, steamid) then
-			http.Fetch(string.format("https://api.steampowered.com/ISteamUser/GetPlayerBans/v1/?key=%s&steamids=%s", apikey, steamID64),
-				function(body, len, headers, code)
-					if body != nil and len != 0 and code == 200 then
-						body = util.JSONToTable(body)
-						body = body["players"][1]
+				if string.find(body, "<isLimitedAccount>1</isLimitedAccount>") then
 
-	 					if body.VACBanned and body.NumberOfVACBans > maxvacbans then
-							game.KickID(steamid, "You have been disconnected from the server (VAC Banned account)")
-							MsgC(greencolor, "Stopping a steam vac banned account ! (VAC Bans : " .. body.NumberOfVACBans .. " | SteamID64 : " .. steamID64 .. " | IP : " .. ipAddress .. ")\n")
-							return
-						end
-					end
-				end,
+					game.KickID(steamID, "You have been disconnected from the server (Limited account)")
 
-				function(error)
-					MsgC(redcolor, "Unable to check an steam account. (ID : " .. steamID64 .. " | Error : '" .. error .. "')\n")
+					MsgC(greenColor, "Stopping a Steam limited account (SteamID: \"" .. steamID .. "\" | IP: \"" .. ipAddress .. "\").\n")
+
 				end
-			)
-		end
 
-		if familysharing and apikey != "" and not table.HasValue(nocheck, steamid) then
-			http.Fetch(string.format("https://api.steampowered.com/IPlayerService/IsPlayingSharedGame/v0001/?key=%s&steamid=%s&appid_playing=4000", apikey, steamID64),
-				function(body, len, headers, code)
-					if body != nil and len != 0 and code == 200 then
-						body = util.JSONToTable(body)
-						body = body.response.lender_steamid
+			end,
 
-						if body != "0" then
-							game.KickID(steamid, "You have been disconnected from the server (Family Sharing game)")
-							MsgC(greencolor, "Stopping a family sharing game ! (SteamID64 : " .. steamID64 .. " | IP : " .. ipAddress .. ")\n")
-							return
-						end
-					end
-				end,
+			function(code)
 
-				function(error)
-					MsgC(redcolor, "Unable to check an steam account. (ID : " .. steamID64 .. " | Error : '" .. error .. "')\n")
+				MsgC(redColor, "Unable to check an Steam account (SteamID: \"" .. steamID .. "\" | Error : \"" .. code .. "\").\n")
+
+			end
+
+		)
+
+	end
+
+	if vacBanCheck and apiKey ~= "" then
+
+		http.Fetch("https://api.steampowered.com/ISteamUser/GetPlayerBans/v1/?key=" .. apikey .. "&steamids=" .. steamID64,
+
+			function(body, length, headers, code)
+
+				if body == "" or length == 0 and code ~= 200 then
+
+					return
+
 				end
-			)
-		end
-	end)
-else
-	timer.Create("SteamAccountChecks.DedicatedServersInitError", 30, 0, function()
-		for _, v in ipairs(player.GetAll()) do
-			v:ChatPrint("'Steam Account Checks' was not loaded because he only work on dedicated servers !")
-		end
-	end)
-end
 
-concommand.Add("steamaccountchecks_check", function(ply)
-	ply:ChatPrint("This server use 'Steam Account Checks' script ! ( https://steamcommunity.com/sharedfiles/filedetails/?id=1314167955 )")
+				body = util.JSONToTable(body) .. players[1]
+
+				if body.VACBanned and body.NumberOfVACBans > maxVACBans then
+
+					game.KickID(steamID, "You have been disconnected from the server (VAC Banned account)")
+
+					MsgC(greenColor, "Stopping a Steam VAC banned account ! (VAC Bans: " .. body.NumberOfVACBans .. " | SteamID: " .. steamID .. " | IP: " .. ipAddress .. ").\n")
+
+					return
+
+				end
+
+			end,
+
+			function(code)
+
+				MsgC(redColor, "Unable to check an Steam account (SteamID: \"" .. steamID .. "\" | Error : \"" .. code .. "\").\n")
+
+			end
+
+		)
+
+	end
+
+	if familySharing and apiKey ~= "" then
+
+		http.Fetch("https://api.steampowered.com/IPlayerService/IsPlayingSharedGame/v0001/?key=" .. apikey .. "&steamid=" .. steamID64 .. "&appid_playing=4000",
+
+			function(body, length, headers, code)
+
+				if body == "" or length == 0 and code ~= 200 then
+
+					return
+
+				end
+
+				body = util.JSONToTable(body).response.lender_steamid
+
+				if body ~= "0" then
+
+					game.KickID(steamID, "You have been disconnected from the server (Family Sharing game)")
+
+					MsgC(greenColor, "Stopping a family sharing game (SteamID : " .. steamID .. " | IP: " .. ipAddress .. ").\n")
+
+					return
+
+				end
+
+			end,
+
+			function(code)
+
+				MsgC(redColor, "Unable to check an Steam account (SteamID: \"" .. steamID .. "\" | Error : \"" .. code .. "\").\n")
+
+			end
+
+		)
+
+	end
+
 end)
 
 -- Made by "The Cat" alias "Florian #" ( http://steamcommunity.com/profiles/76561198053479101 )
