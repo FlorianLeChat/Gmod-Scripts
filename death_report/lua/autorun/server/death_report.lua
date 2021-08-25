@@ -1,8 +1,8 @@
-util.AddNetworkString("DeathReport")
+util.AddNetworkString("Gmod.Workshop.Death_Report")
 
-hook.Add("PlayerDeath", "DeathReport", function(victim, inflictor, attacker)
+hook.Add("PlayerDeath", "Gmod.Workshop.Death_Report", function(victim, inflictor, attacker)
 	if victim ~= attacker and victim:IsPlayer() and attacker:IsPlayer() then
-		net.Start("DeathReport")
+		net.Start("Gmod.Workshop.Death_Report")
 		net.Send(victim)
 	end
 end)

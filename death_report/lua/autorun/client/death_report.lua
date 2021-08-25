@@ -1,4 +1,4 @@
-net.Receive("DeathReport", function()
+net.Receive("Gmod.Workshop.Death_Report", function()
 	local DermaFrame1 = vgui.Create("DFrame")
 	DermaFrame1:SetSize(300, 125)
 	DermaFrame1:Center()
