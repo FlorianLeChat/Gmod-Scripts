@@ -1,0 +1,11 @@
+{
+	"title"		:	"[DarkRP] Silent teleportation",
+	"type"		:	"tool",
+	"tags"		:	["roleplay" , "realism"],
+	"ignore"	:
+	[
+		"*.psd",
+		"*.vcproj",
+		"*.svn*"
+	]
+}
