@@ -1,0 +1,11 @@
+{
+	"title"		:	"Steam account checks",
+	"type"		:	"tool",
+	"tags"		:	["roleplay" , "realism"],
+	"ignore"	:
+	[
+		"*.psd",
+		"*.vcproj",
+		"*.svn*"
+	]
+}
