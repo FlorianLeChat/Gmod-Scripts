@@ -8,7 +8,7 @@ local blacklist = {
 
 GAMEMODE.CanChangeRPName = function() end
 
-hook.Add("CanChangeRPName", "FScript.Workshop.DarkRP_Names", function(ply, name)
+hook.Add("CanChangeRPName", "Gmod.Workshop.DarkRP_Name", function(ply, name)
 
 	if blacklist[string.lower(name)] then
 
@@ -16,7 +16,7 @@ hook.Add("CanChangeRPName", "FScript.Workshop.DarkRP_Names", function(ply, name)
 
 	end
 
-	local length = #name
+	local length = utf8.len(name)
 
 	if length > 35 then
 
