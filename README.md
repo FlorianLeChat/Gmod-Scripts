@@ -1,4 +1,4 @@
-# Garry's Mod Workshop Scripts
+# 🧰 Garry's Mod Workshop Scripts
 
 This directory is basically a mirror of some of my scripts on the [Steam Workshop](https://steamcommunity.com/profiles/76561198053479101/myworkshopfiles/?appid=4000). You can suggest improvements here via pull requests or simply report an issue so I can fix it.
 
