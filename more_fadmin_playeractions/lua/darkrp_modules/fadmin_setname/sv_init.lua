@@ -59,11 +59,13 @@ end
 FAdmin.StartHooks["SetName"] = function()
 
 	FAdmin.Messages.RegisterNotification({
+
 		name = "setname",
 		hasTarget = true,
 		receivers = "everyone",
 		writeExtraInfo = function(info) net.WriteString(info[1]) end,
-		message = {"instigator", " set the name of ", "targets", " to ", "extraInfo.1"},
+		message = {"instigator", " set the name of ", "targets", " to ", "extraInfo.1"}
+
 	})
 
 	FAdmin.Access.AddPrivilege("SetName", 2)

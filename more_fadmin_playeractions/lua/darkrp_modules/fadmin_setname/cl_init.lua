@@ -1,37 +1,45 @@
 FAdmin.StartHooks["SetName"] = function()
 
 	FAdmin.Messages.RegisterNotification({
+
 		name = "setname",
 		hasTarget = true,
 		message = {"instigator", " set the name of ", "targets", " to ", "extraInfo.1"},
 		readExtraInfo = function() return {net.ReadString()} end
+
 	})
 
 	FAdmin.Access.AddPrivilege("SetName", 2)
-	FAdmin.Commands.AddCommand("setname", nil, "<Player>", "<Name>")
+	FAdmin.Commands.AddCommand("setname", nil, "[Player]", "<Name>")
 
 	FAdmin.ScoreBoard.Player:AddActionButton("Set name", "icon16/textfield_rename.png", Color(0, 200, 0, 255),
 
-	function(ply) return FAdmin.Access.PlayerHasPrivilege(LocalPlayer(), "SetName", ply) end,
+		function(ply)
 
-	function(ply, button)
+			return FAdmin.Access.PlayerHasPrivilege(LocalPlayer(), "SetName", ply)
 
-	end,
+		end,
 
-	function(ply, button)
+		function(ply, button)
 
-		button.OnMousePressed = function()
+		end,
 
-			local window = Derma_StringRequest("Select name", "What do you want the name of the person to be?", "", function(text)
+		function(ply, button)
 
-				RunConsoleCommand("fadmin", "setname", ply:UserID(), text)
+			button.OnMousePressed = function()
 
-			end)
+				local window = Derma_StringRequest("Select name", "What do you want the name of the person to be?", "", function(text)
 
-			window:RequestFocus()
+					RunConsoleCommand("fadmin", "setname", ply:UserID(), text)
+
+				end)
+
+				window:RequestFocus()
+
+			end
 
 		end
 
-	end)
+	)
 
 end

@@ -53,11 +53,13 @@ end
 FAdmin.StartHooks["SetScale"] = function()
 
 	FAdmin.Messages.RegisterNotification({
+
 		name = "setscale",
 		hasTarget = true,
 		receivers = "everyone",
 		writeExtraInfo = function(info) net.WriteString(info[1]) end,
-		message = {"instigator", " set the scale of ", "targets", " to ", "extraInfo.1"},
+		message = {"instigator", " set the scale of ", "targets", " to ", "extraInfo.1"}
+
 	})
 
 	FAdmin.Access.AddPrivilege("SetScale", 2)

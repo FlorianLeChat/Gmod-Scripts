@@ -50,11 +50,13 @@ end
 FAdmin.StartHooks["SetArmor"] = function()
 
 	FAdmin.Messages.RegisterNotification({
+
 		name = "setarmor",
 		hasTarget = true,
 		receivers = "everyone",
 		writeExtraInfo = function(info) net.WriteString(info[1]) end,
-		message = {"instigator", " set the armor of ", "targets", " to ", "extraInfo.1"},
+		message = {"instigator", " set the armor of ", "targets", " to ", "extraInfo.1"}
+
 	})
 
 	FAdmin.Access.AddPrivilege("SetArmor", 2)

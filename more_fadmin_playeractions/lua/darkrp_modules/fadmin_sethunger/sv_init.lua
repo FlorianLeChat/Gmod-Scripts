@@ -47,17 +47,18 @@ local function SetHunger(ply, cmd, args)
 
 end
 
-
 FAdmin.StartHooks["SetHunger"] = function()
 
 	if DarkRP.disabledDefaults["modules"]["hungermod"] then return end
 
 	FAdmin.Messages.RegisterNotification({
+
 		name = "sethunger",
 		hasTarget = true,
 		receivers = "everyone",
 		writeExtraInfo = function(info) net.WriteString(info[1]) end,
-		message = {"instigator", " set the hunger of ", "targets", " to ", "extraInfo.1"},
+		message = {"instigator", " set the hunger of ", "targets", " to ", "extraInfo.1"}
+
 	})
 
 	FAdmin.Access.AddPrivilege("SetHunger", 2)
