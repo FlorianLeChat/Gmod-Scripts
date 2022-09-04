@@ -344,8 +344,9 @@ local function TasksPanel()
 	end
 end
 
-hook.Add("KeyPress", "TasksKey", function(ply, key)
-	if key == IN_USE then
+hook.Add("OnPlayerChat", "TasksCommand", function(ply, text)
+	if ply == LocalPlayer() and string.lower(text) == "/tasks" then
 		TasksPanel()
+		return true
 	end
 end)
