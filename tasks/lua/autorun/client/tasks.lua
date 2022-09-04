@@ -40,7 +40,7 @@ local function TasksPanel()
 	--	local num2 = #file.Find("tasks/lists/*", "DATA")
 
 	local editing = false
-	local editid = 0
+	local editId = 0
 
 	local Panel = vgui.Create("DFrame")
 	Panel:SetSize(ScrW() - 100, ScrH() - 100)
@@ -111,13 +111,13 @@ local function TasksPanel()
 
 			file.Write("tasks/data/file_" .. num1 .. ".txt", TextEntry1:GetText() .. "|" .. TextEntry2:GetText())
 
-			local file = string.Explode("|", file.Read("tasks/data/file_" .. num1 .. ".txt"))
+			local content = string.Explode("|", file.Read("tasks/data/file_" .. num1 .. ".txt"))
 
 			AddButton(TextEntry1:GetText() .. " #" .. num1, DScrollPanel, function()
-				TextEntry1:SetText(file[1])
-				TextEntry2:SetText(file[2])
+				TextEntry1:SetText(content[1])
+				TextEntry2:SetText(content[2])
 				editing = true
-				editid = num1
+				editId = num1
 				Button:SetText("Sauvegarder les changements de la tâche")
 			end)
 
@@ -126,7 +126,7 @@ local function TasksPanel()
 			TextEntry1:SetText(GetTitle())
 			TextEntry2:SetText(GetBody())
 		else
-			file.Write("tasks/data/file_" .. editid .. ".txt", TextEntry1:GetText() .. "|" .. TextEntry2:GetText())
+			file.Write("tasks/data/file_" .. editId .. ".txt", TextEntry1:GetText() .. "|" .. TextEntry2:GetText())
 
 			Derma_Message("Le fichier '" .. TextEntry1:GetText() .. "' a été modifié avec succès !", "Information", "OK")
 
@@ -307,13 +307,13 @@ local function TasksPanel()
 	for i = 1, num1 do
 		if file.Read("tasks/data/file_" .. i .. ".txt") == nil then continue end
 
-		local file = string.Explode("|", file.Read("tasks/data/file_" .. i .. ".txt"))
+		local content = string.Explode("|", file.Read("tasks/data/file_" .. i .. ".txt"))
 
-		AddButton(file[1] .. " #" .. i, DScrollPanel, function()
-			TextEntry1:SetText(file[1])
-			TextEntry2:SetText(file[2])
+		AddButton(content[1] .. " #" .. i, DScrollPanel, function()
+			TextEntry1:SetText(content[1])
+			TextEntry2:SetText(content[2])
 			editing = true
-			editid = i
+			editId = i
 			Button:SetText("Sauvegarder les changements de la tâche")
 		end)
 	end
@@ -331,13 +331,13 @@ local function TasksPanel()
 		for i = 1, num1 do
 			if file.Read("tasks/data/file_" .. i .. ".txt") == nil then continue end
 
-			local file = string.Explode("|", file.Read("tasks/data/file_" .. i .. ".txt"))
+			local content = string.Explode("|", file.Read("tasks/data/file_" .. i .. ".txt"))
 
-			AddButton(file[1] .. " #" .. i, DScrollPanel, function()
-				TextEntry1:SetText(file[1])
-				TextEntry2:SetText(file[2])
+			AddButton(content[1] .. " #" .. i, DScrollPanel, function()
+				TextEntry1:SetText(content[1])
+				TextEntry2:SetText(content[2])
 				editing = true
-				editid = i
+				editId = i
 				Button:SetText("Sauvegarder les changements de la tâche")
 			end)
 		end
